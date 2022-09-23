@@ -160,3 +160,20 @@ func NewJar(path string) (http.CookieJar, error) {
 
 	return jar, nil
 }
+
+// ReadCookies reads cookies in the Mozilla/Netscape cookie file format
+// and returns them as []*http.Cookie
+func ReadCookies(path string) ([]*http.Cookie, error) {
+	var cs []*http.Cookie
+	f, err := os.Open(path)
+	if err != nil {
+		return cs, err
+	}
+	defer f.Close()
+
+	cs, err = ParseCookieJar(f)
+	if err != nil {
+		return cs, err
+	}
+	return cs, nil
+}
